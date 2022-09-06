@@ -178,7 +178,7 @@ impl Account {
     }
 
     // Place a LIMIT order - BUY
-    pub fn limit_buy<S, F>(&self, symbol: S, qty: F, price: f64) -> Result<Transaction>
+    pub fn limit_buy<S, F>(&self, symbol: S, qty: F, price: f64, client_order_id: String) -> Result<Transaction>
     where
         S: Into<String>,
         F: Into<f64>,
@@ -191,7 +191,7 @@ impl Account {
             order_side: OrderSide::Buy,
             order_type: OrderType::Limit,
             time_in_force: TimeInForce::GTC,
-            new_client_order_id: None,
+            new_client_order_id: Some(client_order_id),
         };
         let order = self.build_order(buy);
         let request = build_signed_request(order, self.recv_window)?;
@@ -224,7 +224,7 @@ impl Account {
     }
 
     // Place a LIMIT order - SELL
-    pub fn limit_sell<S, F>(&self, symbol: S, qty: F, price: f64) -> Result<Transaction>
+    pub fn limit_sell<S, F>(&self, symbol: S, qty: F, price: f64, client_order_id: String) -> Result<Transaction>
     where
         S: Into<String>,
         F: Into<f64>,
@@ -237,7 +237,7 @@ impl Account {
             order_side: OrderSide::Sell,
             order_type: OrderType::Limit,
             time_in_force: TimeInForce::GTC,
-            new_client_order_id: None,
+            new_client_order_id: Some(client_order_id),
         };
         let order = self.build_order(sell);
         let request = build_signed_request(order, self.recv_window)?;

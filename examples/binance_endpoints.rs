@@ -81,7 +81,7 @@ fn account() {
         Err(e) => println!("Error: {}", e),
     }
 
-    match account.limit_buy("WTCETH", 10, 0.014000) {
+    match account.limit_buy("WTCETH", 10, 0.014000, String::from("test")) {
         Ok(answer) => println!("{:?}", answer),
         Err(e) => println!("Error: {}", e),
     }
@@ -96,7 +96,7 @@ fn account() {
         Err(e) => println!("Error: {}", e),
     }
 
-    match account.limit_sell("WTCETH", 10, 0.035000) {
+    match account.limit_sell("WTCETH", 10, 0.035000, String::from("test")) {
         Ok(answer) => println!("{:?}", answer),
         Err(e) => println!("Error: {}", e),
     }

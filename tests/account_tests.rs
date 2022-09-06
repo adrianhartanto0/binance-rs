@@ -273,7 +273,7 @@ mod tests {
             .set_recv_window(1234);
         let account: Account = Binance::new_with_config(None, None, &config);
         let _ = env_logger::try_init();
-        let transaction: Transaction = account.limit_buy("LTCBTC", 1, 0.1).unwrap();
+        let transaction: Transaction = account.limit_buy("LTCBTC", 1, 0.1, String::from("test")).unwrap();
 
         mock_limit_buy.assert();
 
@@ -328,7 +328,7 @@ mod tests {
             .set_recv_window(1234);
         let account: Account = Binance::new_with_config(None, None, &config);
         let _ = env_logger::try_init();
-        let transaction: Transaction = account.limit_sell("LTCBTC", 1, 0.1).unwrap();
+        let transaction: Transaction = account.limit_sell("LTCBTC", 1, 0.1, String::from("test")).unwrap();
 
         mock_limit_sell.assert();
 
