@@ -524,8 +524,8 @@ pub struct OrderTradeEvent {
     #[serde(skip)]
     pub g: i32,
 
-    #[serde(skip, rename = "C")]
-    pub c_ignore: Option<String>,
+    #[serde(rename = "C")]
+    pub original_client_id: Option<String>,
 
     #[serde(rename = "x")]
     pub execution_type: String,
