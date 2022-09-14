@@ -678,7 +678,7 @@ impl Account {
     }
 
     pub fn cancel_order_with_client_id<S>(
-        &self, symbol: S, orig_client_order_id: String,
+        &self, symbol: S, orig_client_order_id: String, new_client_id: String
     ) -> Result<OrderCanceled>
     where
         S: Into<String>,
@@ -686,6 +686,7 @@ impl Account {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
         parameters.insert("origClientOrderId".into(), orig_client_order_id);
+        parameters.insert("newClientOrderId".into(), new_client_id);
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
