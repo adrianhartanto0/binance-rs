@@ -121,12 +121,17 @@ impl<'a> WebSockets<'a> {
     fn handle_msg(&mut self, msg: &str) -> Result<()> {
         let value: serde_json::Value = serde_json::from_str(msg)?;
 
+        println!("Received value {:?}", value);
+
         if let Some(data) = value.get("data") {
             self.handle_msg(&data.to_string())?;
             return Ok(());
         }
 
         if let Ok(events) = serde_json::from_value::<Events>(value) {
+
+            println!("Received events {:?}", events);
+
             let action = match events {
                 Events::Vec(v) => WebsocketEvent::DayTickerAll(v),
                 Events::BookTickerEvent(v) => WebsocketEvent::BookTicker(v),
