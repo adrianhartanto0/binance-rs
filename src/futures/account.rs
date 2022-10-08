@@ -128,6 +128,7 @@ struct OrderRequest {
     pub callback_rate: Option<f64>,
     pub working_type: Option<WorkingType>,
     pub price_protect: Option<f64>,
+    pub new_client_order_id: Option<String>
 }
 
 pub struct CustomOrderRequest {
@@ -151,6 +152,7 @@ impl FuturesAccount {
     pub fn limit_buy(
         &self, symbol: impl Into<String>, qty: impl Into<f64>, price: f64,
         time_in_force: TimeInForce,
+        client_order_id: String
     ) -> Result<Transaction> {
         let buy = OrderRequest {
             symbol: symbol.into(),
@@ -167,6 +169,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: Some(client_order_id)
         };
         let order = self.build_order(buy);
         let request = build_signed_request(order, self.recv_window)?;
@@ -177,6 +180,7 @@ impl FuturesAccount {
     pub fn limit_sell(
         &self, symbol: impl Into<String>, qty: impl Into<f64>, price: f64,
         time_in_force: TimeInForce,
+        client_order_id: String
     ) -> Result<Transaction> {
         let sell = OrderRequest {
             symbol: symbol.into(),
@@ -193,6 +197,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: Some(client_order_id)
         };
         let order = self.build_order(sell);
         let request = build_signed_request(order, self.recv_window)?;
@@ -221,6 +226,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: None
         };
         let order = self.build_order(buy);
         let request = build_signed_request(order, self.recv_window)?;
@@ -249,6 +255,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: None
         };
         let order = self.build_order(sell);
         let request = build_signed_request(order, self.recv_window)?;
@@ -305,6 +312,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: None
         };
         let order = self.build_order(sell);
         let request = build_signed_request(order, self.recv_window)?;
@@ -333,6 +341,7 @@ impl FuturesAccount {
             callback_rate: None,
             working_type: None,
             price_protect: None,
+            new_client_order_id: None
         };
         let order = self.build_order(sell);
         let request = build_signed_request(order, self.recv_window)?;
@@ -357,6 +366,7 @@ impl FuturesAccount {
             callback_rate: order_request.callback_rate,
             working_type: order_request.working_type,
             price_protect: order_request.price_protect,
+            new_client_order_id: None
         };
         let order = self.build_order(order);
         let request = build_signed_request(order, self.recv_window)?;
@@ -449,6 +459,10 @@ impl FuturesAccount {
                 close_position.to_string().to_uppercase(),
             );
         }
+        if let Some(client_order_id) = order.new_client_order_id {
+            parameters.insert("newClientOrderId".into(), client_order_id);
+        }
+
         if let Some(activation_price) = order.activation_price {
             parameters.insert("activationPrice".into(), activation_price.to_string());
         }
