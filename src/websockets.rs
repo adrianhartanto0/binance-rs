@@ -121,8 +121,6 @@ impl<'a> WebSockets<'a> {
     fn handle_msg(&mut self, msg: &str) -> Result<()> {
         let value: serde_json::Value = serde_json::from_str(msg)?;
 
-        println!("Received value {:?}", value);
-
         if let Some(data) = value.get("data") {
             self.handle_msg(&data.to_string())?;
             return Ok(());
