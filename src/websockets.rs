@@ -128,8 +128,6 @@ impl<'a> WebSockets<'a> {
 
         if let Ok(events) = serde_json::from_value::<Events>(value) {
 
-            println!("Received events {:?}", events);
-
             let action = match events {
                 Events::Vec(v) => WebsocketEvent::DayTickerAll(v),
                 Events::BookTickerEvent(v) => WebsocketEvent::BookTicker(v),
