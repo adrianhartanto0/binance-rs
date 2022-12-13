@@ -494,6 +494,20 @@ impl FuturesAccount {
             .get_signed(API::Futures(Futures::PositionRisk), Some(request))
     }
 
+    // Check an order's status
+    pub fn order_status<S>(&self, symbol: S, order_id: u64) -> Result<crate::futures::model::Order>
+    where
+        S: Into<String>,
+    {
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
+        parameters.insert("orderId".into(), order_id.to_string());
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client
+            .get_signed(API::Futures(Futures::Order), Some(request))
+    }
+
     pub fn account_information(&self) -> Result<AccountInformation> {
         let parameters = BTreeMap::new();
 
