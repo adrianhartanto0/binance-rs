@@ -769,7 +769,7 @@ pub struct BookTickerEvent {
     pub update_id: u64,
 
     #[serde(rename = "E")]
-    pub event_time: u64,
+    pub event_time: Option<u64>,
 
     #[serde(rename = "s")]
     pub symbol: String,
