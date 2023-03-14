@@ -482,12 +482,13 @@ impl FuturesAccount {
         parameters
     }
 
-    pub fn position_information<S>(&self, symbol: S) -> Result<Vec<PositionRisk>>
-    where
-        S: Into<String>,
+    pub fn position_information<S>(&self, symbol: Option<String>) -> Result<Vec<PositionRisk>>
     {
         let mut parameters = BTreeMap::new();
-        parameters.insert("symbol".into(), symbol.into());
+
+        if symbol.is_some() {
+          parameters.insert("symbol".to_string(), symbol.unwrap());
+        }
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
