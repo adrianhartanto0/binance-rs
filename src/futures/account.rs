@@ -499,13 +499,20 @@ impl FuturesAccount {
     }
 
     // Check an order's status
-    pub fn order_status<S>(&self, symbol: S, order_id: u64) -> Result<crate::futures::model::Order>
+    pub fn order_status<S>(&self, symbol: S, order_id_option: Option<u64>, client_order_id_option: Option<String>) -> Result<crate::futures::model::Order>
     where
         S: Into<String>,
     {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
-        parameters.insert("orderId".into(), order_id.to_string());
+
+        if order_id_option.is_some() {
+          parameters.insert("orderId".into(), order_id_option.unwrap().to_string());
+        }
+
+        if client_order_id_option.is_some() {
+          parameters.insert("origClientOrderId".into(), client_order_id_option.unwrap());
+        }
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
