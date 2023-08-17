@@ -24,6 +24,7 @@ use crate::util::{build_request, build_signed_request};
 use crate::futures::model::{
     AggTrades, BookTickers, KlineSummaries, KlineSummary, LiquidationOrders, MarkPrices,
     OpenInterest, OpenInterestHist, OrderBook, PriceStats, SymbolPrice, Tickers, Trades,
+    FundingRates
 };
 use crate::client::Client;
 use crate::errors::Result;
@@ -80,6 +81,23 @@ impl FuturesMarket {
         let request = build_request(parameters);
         self.client
             .get(API::Futures(Futures::Trades), Some(request))
+    }
+
+    pub fn get_funding_rate<S, S1>(&self, symbol: S, limit: S1) -> Result<FundingRates>
+    where
+        S: Into<String>,
+        S1: Into<Option<u16>>,
+    {
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
+
+        if let Some(lt) = limit.into() {
+            parameters.insert("limit".into(), format!("{}", lt));
+        }
+
+        let request = build_request(parameters);
+        self.client
+            .get(API::Futures(Futures::FundingRate), Some(request))
     }
 
     // TODO This may be incomplete, as it hasn't been tested

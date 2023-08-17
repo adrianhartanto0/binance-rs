@@ -102,6 +102,22 @@ pub struct TradeHistory {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(untagged)]
+pub enum FundingRates {
+    AllFundingRates(Vec<FundingRate>),
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct FundingRate {
+  pub symbol: String,
+
+  #[serde(with = "string_or_float")]
+  pub funding_rate: f64,
+  pub funding_time: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(untagged)]
 pub enum Trades {
     AllTrades(Vec<Trade>),
 }

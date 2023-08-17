@@ -5,7 +5,7 @@ use binance::futures::model::*;
 use binance::errors::ErrorKind as BinanceLibErrorKind;
 
 fn main() {
-    general();
+    // general();
     //account();
     market_data();
 }
@@ -54,6 +54,11 @@ fn market_data() {
     match market.get_trades("btcusdt") {
         Ok(Trades::AllTrades(answer)) => println!("First trade: {:?}", answer[0]),
         Err(e) => println!("Error: {}", e),
+    }
+
+    match market.get_funding_rate("btcusdt", 1) {
+      Ok(FundingRates::AllFundingRates(answer)) => println!("First funding rate: {:?}", answer[0]),
+      Err(e) => println!("Error: {}", e),
     }
 
     match market.get_agg_trades("btcusdt", None, None, None, None) {
