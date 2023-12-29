@@ -125,7 +125,7 @@ impl<'a> FuturesWebSockets<'a> {
     }
 
     pub fn connect_multiple_streams(
-        &mut self, market: &FuturesMarket, endpoints: &[String],
+        &mut self, market: &FuturesMarket, endpoints: &Vec<String>,
     ) -> Result<()> {
         self.connect_wss(&FuturesWebsocketAPI::MultiStream.params(market, &endpoints.join("/")))
     }
