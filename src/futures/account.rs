@@ -573,10 +573,12 @@ impl FuturesAccount {
             .map(|_| ())
     }
 
-    pub fn get_all_open_orders<S>(&self) -> Result<Vec<crate::futures::model::Order>>
+    pub fn get_all_open_orders<S>(&self, symbol: S) -> Result<Vec<crate::futures::model::Order>>
+    where
+        S: Into<String>,
     {
-        let parameters: BTreeMap<String, String> = BTreeMap::new();
-        // parameters.insert("symbol".into(), symbol.into());
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
             .get_signed(API::Futures(Futures::OpenOrders), Some(request))
