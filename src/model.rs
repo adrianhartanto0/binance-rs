@@ -49,6 +49,11 @@ pub struct Symbol {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(tag = "filterType")]
 pub enum Filters {
+    #[serde(rename = "POSITION_RISK_CONTROL")]
+    #[serde(rename_all = "camelCase")]
+    RiskControl {
+        position_control_side: String,
+    },
     #[serde(rename = "PRICE_FILTER")]
     #[serde(rename_all = "camelCase")]
     PriceFilter {
